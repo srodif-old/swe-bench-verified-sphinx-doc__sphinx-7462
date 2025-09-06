@@ -100,7 +100,8 @@ def _parse_annotation(annotation: str) -> List[Node]:
             for elem in node.elts:
                 result.extend(unparse(elem))
                 result.append(addnodes.desc_sig_punctuation('', ', '))
-            result.pop()
+            if len(result) > 1:  # Only pop if there are elements beyond the opening bracket
+                result.pop()
             result.append(addnodes.desc_sig_punctuation('', ']'))
             return result
         elif isinstance(node, ast.Module):
@@ -118,7 +119,8 @@ def _parse_annotation(annotation: str) -> List[Node]:
             for elem in node.elts:
                 result.extend(unparse(elem))
                 result.append(addnodes.desc_sig_punctuation('', ', '))
-            result.pop()
+            if result:  # Only pop if there are elements to pop
+                result.pop()
             return result
         else:
             raise SyntaxError  # unsupported syntax
